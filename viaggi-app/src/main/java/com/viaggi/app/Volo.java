@@ -10,6 +10,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping;
@@ -17,7 +18,8 @@ import com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping;
 /**
  * @author Luigi
  * 
- * Classe che definisce l'oggetto di tipo Volo ed implementa le funzionalità di inserimento e selezione.
+ *         Classe che definisce l'oggetto di tipo Volo ed implementa le
+ *         funzionalità di inserimento e selezione.
  *
  */
 public class Volo {
@@ -55,13 +57,15 @@ public class Volo {
 
 	/**
 	 * Costruttore che inizializza oggetti di tipo Volo.
-	 * @param idVolo è l'id del volo, chiave primaria della tabella nel database.
-	 * @param giornoSett giorno di partenza del volo.
+	 * 
+	 * @param idVolo        è l'id del volo, chiave primaria della tabella nel
+	 *                      database.
+	 * @param giornoSett    giorno di partenza del volo.
 	 * @param aeroportoPart aeroporto di partenza.
-	 * @param aeroportoArr aeroporto di arrivo.
-	 * @param tipoAereo modello dell'aereo.
-	 * @param oraPartenza ora di partenza.
-	 * @param oraArrivo ora di arrivo.
+	 * @param aeroportoArr  aeroporto di arrivo.
+	 * @param tipoAereo     modello dell'aereo.
+	 * @param oraPartenza   ora di partenza.
+	 * @param oraArrivo     ora di arrivo.
 	 */
 	public Volo(int idVolo, String giornoSett, String aeroportoPart, String aeroportoArr, String tipoAereo,
 			String oraPartenza, String oraArrivo) {
@@ -79,108 +83,93 @@ public class Volo {
 	/**
 	 * Metodo che effettua l'inserimento nel database di un oggetto di tipo Volo.
 	 * (PRE: l'operazione di Scanner deve andare a buon fine.).
+	 * 
 	 * @param inputK oggetto di tipo Scanner.
+	 * @throws SQLException
 	 */
-	public void insertVolo(Scanner inputK) {
+	public void insertVolo(Scanner inputK) throws SQLException {
 
+		connection = DriverManager.getConnection(connectionString);
+
+		Statement stm = connection.createStatement();
+
+		String query = "INSERT INTO Volo (giornoSett,aeroportoPart,aeroportoArr,tipoAereo,oraPartenza,oraArrivo) VALUES (?,?,?,?,?,?)";
+
+		PreparedStatement prepared = connection.prepareStatement(query);
+
+		System.out.println("Inserisci il giorno della settimana: ");
+		giornoSett = inputK.nextLine();
+		prepared.setString(1, giornoSett);
+
+		System.out.println("Inserisci la sigla dell'aeroporto di partenza: ");
+		aeroportoPart = inputK.nextLine();
+		prepared.setString(2, aeroportoPart.toUpperCase());
+
+		System.out.println("Inserisci la sigla dell'aeroporto di arrivo: ");
+		aeroportoArr = inputK.nextLine();
+		prepared.setString(3, aeroportoArr.toUpperCase());
+
+		System.out.println("Inserisci il modello dell'aereo: ");
+		tipoAereo = inputK.nextLine();
+		prepared.setString(4, tipoAereo);
+
+		System.out.println("Inserisci l'orario di partenza (HH:MM:SS): ");
+		oraPartenza = inputK.nextLine();
+		prepared.setString(5, oraPartenza);
+
+		System.out.println("Inserisci l'orario di arrivo (HH:MM:SS): ");
+		oraArrivo = inputK.nextLine();
+		prepared.setString(6, oraArrivo);
+
+		prepared.executeUpdate();
+
+		/**
+		 * Visualizzazione in console del volo appena inserito
+		 */
+		ResultSet rs = stm.executeQuery("SELECT * FROM Volo ORDER BY idVolo DESC LIMIT 1;");
+		ResultSetMetaData rsmd = rs.getMetaData();
+
+		while (rs.next()) {
+			System.out.println(rsmd.getColumnName(2) + " " + rs.getString(2) + ", " + rsmd.getColumnName(3) + " "
+					+ rs.getString(3) + ", " + rsmd.getColumnName(4) + " " + rs.getString(4) + ", "
+					+ rsmd.getColumnName(5) + " " + rs.getString(5) + ", " + rsmd.getColumnName(6) + " "
+					+ rs.getString(6) + ", " + rsmd.getColumnName(7) + " " + rs.getString(7));
+		}
+		
 		try {
-
-			connection = DriverManager.getConnection(connectionString);
-
-			Statement stm = connection.createStatement();
-
-			String query = "INSERT INTO Volo (giornoSett,aeroportoPart,aeroportoArr,tipoAereo,oraPartenza,oraArrivo) VALUES (?,?,?,?,?,?)";
-
-			PreparedStatement prepared = connection.prepareStatement(query);
-
-			System.out.println("Inserisci il giorno della settimana: ");
-			giornoSett = inputK.nextLine();
-			prepared.setString(1, giornoSett);
-
-			System.out.println("Inserisci la sigla dell'aeroporto di partenza: ");
-			aeroportoPart = inputK.nextLine();
-			prepared.setString(2, aeroportoPart.toUpperCase());
-
-			System.out.println("Inserisci la sigla dell'aeroporto di arrivo: ");
-			aeroportoArr = inputK.nextLine();
-			prepared.setString(3, aeroportoArr.toUpperCase());
-
-			System.out.println("Inserisci il modello dell'aereo: ");
-			tipoAereo = inputK.nextLine();
-			prepared.setString(4, tipoAereo);
-
-			System.out.println("Inserisci l'orario di partenza (HH:MM:SS): ");
-			oraPartenza = inputK.nextLine();
-			prepared.setString(5, oraPartenza);
-
-			System.out.println("Inserisci l'orario di arrivo (HH:MM:SS): ");
-			oraArrivo = inputK.nextLine();
-			prepared.setString(6, oraArrivo);
-
-			prepared.executeUpdate();
-
-			/**
-			 * Visualizzazione in console del volo appena inserito
-			 */
-			ResultSet rs = stm.executeQuery("SELECT * FROM Volo ORDER BY idVolo DESC LIMIT 1;");
-			ResultSetMetaData rsmd = rs.getMetaData();
-
-			while (rs.next()) {
-				System.out.println(rsmd.getColumnName(2) + " " + rs.getString(2) + ", " + rsmd.getColumnName(3) + " "
-						+ rs.getString(3) + ", " + rsmd.getColumnName(4) + " " + rs.getString(4) + ", "
-						+ rsmd.getColumnName(5) + " " + rs.getString(5) + ", " + rsmd.getColumnName(6) + " "
-						+ rs.getString(6) + ", " + rsmd.getColumnName(7) + " " + rs.getString(7));
-			}
-
-			System.out.println("Operazione effettuata.");
-			System.out.println("");
-
-		} catch (SQLIntegrityConstraintViolationException e) {
-//			e.printStackTrace();
-			System.out.println("Problema con le foreign key, operazione non eseguita!");
+			if (connection != null)
+				connection.close();
 		} catch (SQLException e) {
-			System.err.println("Errore, operazione non effettuata.");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		} finally {
-			try {
-				if (connection != null)
-					connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 
 	}
 
 	/**
-	 * Metodo che implementa la funzionalità di ricerca di un volo, dato l'id.
-	 * (PRE: l'operazione di Scanner deve andare a buon fine.).
+	 * Metodo che implementa la funzionalità di ricerca di un volo, dato l'id. (PRE:
+	 * l'operazione di Scanner deve andare a buon fine.).
+	 * 
 	 * @param inputK oggetto di tipo Scanner.
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
-	public void cercaVolo(Scanner inputK) throws SQLException {
+	public void cercaVolo(Scanner inputK) throws SQLException, InputMismatchException {
 
-			connection = DriverManager.getConnection(connectionString);
+		connection = DriverManager.getConnection(connectionString);
 
-			Statement stm = connection.createStatement();
+		Statement stm = connection.createStatement();
 
-			System.out.println("Inserisci l'id del volo che vuoi cercare: ");
-			int idVolo = inputK.nextInt();
+		System.out.println("Inserisci l'id del volo che vuoi cercare: ");
+		int idVolo = inputK.nextInt();
 
-			ResultSet rs = stm.executeQuery("SELECT * FROM Volo WHERE idVolo = " + idVolo);
-			ResultSetMetaData rsmd = rs.getMetaData();
+		ResultSet rs = stm.executeQuery("SELECT * FROM Volo WHERE idVolo = " + idVolo);
+		ResultSetMetaData rsmd = rs.getMetaData();
 
-			while (rs.next()) {
-				System.out.println(rsmd.getColumnName(2) + " " + rs.getString(2) + ", " + rsmd.getColumnName(3) + " "
-						+ rs.getString(3) + ", " + rsmd.getColumnName(4) + " " + rs.getString(4) + ", "
-						+ rsmd.getColumnName(5) + " " + rs.getString(5) + ", " + rsmd.getColumnName(6) + " "
-						+ rs.getString(6) + ", " + rsmd.getColumnName(7) + " " + rs.getString(7));
-			}
-
-			
-			System.out.println("Operazione effettuata.");
-			System.out.println("");
+		while (rs.next()) {
+			System.out.println(rsmd.getColumnName(2) + " " + rs.getString(2) + ", " + rsmd.getColumnName(3) + " "
+					+ rs.getString(3) + ", " + rsmd.getColumnName(4) + " " + rs.getString(4) + ", "
+					+ rsmd.getColumnName(5) + " " + rs.getString(5) + ", " + rsmd.getColumnName(6) + " "
+					+ rs.getString(6) + ", " + rsmd.getColumnName(7) + " " + rs.getString(7));
+		}
 
 		try {
 			if (connection != null)
@@ -190,5 +179,5 @@ public class Volo {
 		}
 
 	}
-	
+
 }

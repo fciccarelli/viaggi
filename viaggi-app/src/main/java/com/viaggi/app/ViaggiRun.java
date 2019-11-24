@@ -25,7 +25,6 @@ public class ViaggiRun {
 				scelta = mostraOpzioni(inputK);
 			} catch (InputMismatchException e){
 				System.out.print("Puoi inserire solo dei numeri. ");
-				inputK.next();
 			}
 	
 			switch (scelta) {
@@ -33,43 +32,97 @@ public class ViaggiRun {
 			case 0:
 				System.out.println("Grazie ed Arrivederci.");
 				break;
+				
 			case 1:
-				aereo.insertAereo(inputK);
+				try {
+					aereo.insertAereo(inputK);
+				} catch (SQLException e2) {
+					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
+//					e2.printStackTrace();
+				} catch (InputMismatchException e2) {
+					System.err.println("Hai inserito una stringa, non accettato.");
+					System.out.println("");
+				}
 				break;
-	
+				
 			case 2:
-				aereo.cercaAereo(inputK);
+				try {
+					aereo.cercaAereo(inputK);
+				} catch (SQLException e2) {
+					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
+//					e2.printStackTrace();
+				} catch (InputMismatchException e2) {
+					System.err.println("Hai inserito una stringa, non accettato.");
+					System.out.println("");
+				}
 				break;
 	
 			case 3:
-				aereo.updatePassengers(inputK);
+				try {
+					aereo.updatePassengers(inputK);
+				} catch (SQLException e2) {
+					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
+//					e2.printStackTrace();
+				} catch (InputMismatchException e2) {
+					System.err.println("Hai inserito una stringa, non accettato.");
+					System.out.println("");
+				}
 				break;
 	
 			case 4:
-				aeroporto.insertAeroporto(inputK);
+				try {
+					aeroporto.insertAeroporto(inputK);
+				} catch (SQLException e1) {
+					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
+//					e1.printStackTrace();
+				} catch (InputMismatchException e2) {
+					System.err.println("Hai inserito una stringa, non accettato.");
+					System.out.println("");
+				}
 				break;
 	
 			case 5:
 				try {
 					aeroporto.cercaAeroporto(inputK);
 				} catch (SQLException e) {
-					e.printStackTrace();
+					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
+//					e.printStackTrace();
+				} catch (InputMismatchException e2) {
+					System.err.println("Hai inserito una stringa, non accettato.");
+					System.out.println("");
 				}
 				break;
 					
 			case 6:
-				aeroporto.updatePiste(inputK);
+				try {
+					aeroporto.updatePiste(inputK);
+				} catch (SQLException e1) {
+					System.err.println("Hai inserito un valore non accettato nel database");
+//					e1.printStackTrace();
+				} catch (InputMismatchException e2) {
+					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
+					System.out.println("");
+				}
 				break;
 					
 			case 7:
-				volo.insertVolo(inputK);
+				try {
+					volo.insertVolo(inputK);
+				} catch (SQLException e1) {
+					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
+//					e1.printStackTrace();
+				}
 				break;
 					
 			case 8:
 				try {
 					volo.cercaVolo(inputK);
 				} catch (SQLException e) {
+					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
 					e.printStackTrace();
+				} catch (InputMismatchException e2) {
+					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
+					System.out.println("");
 				}
 				break;
 					
@@ -78,7 +131,7 @@ public class ViaggiRun {
 				scelta = 999;
 				break;
 			}
-	
+
 		} while (scelta > 0);
 		
 		inputK.close();
