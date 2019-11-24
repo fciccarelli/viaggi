@@ -67,7 +67,7 @@ public class Aereo {
 	 * @param inputK oggetto di tipo Scanner.
 	 * @throws SQLException
 	 */
-	public void insertAereo(Scanner inputK) throws SQLException, InputMismatchException {
+	public void insertAereo(Scanner inputK) throws SQLException, InputMismatchException, SQLIntegrityConstraintViolationException {
 
 		connection = DriverManager.getConnection(connectionString);
 
@@ -125,7 +125,7 @@ public class Aereo {
 	 * @param inputK oggetto di tipo Scanner.
 	 * @throws SQLException
 	 */
-	public void cercaAereo(Scanner inputK) throws SQLException, InputMismatchException {
+	public void cercaAereo(Scanner inputK) throws SQLException, InputMismatchException, SQLIntegrityConstraintViolationException {
 
 		connection = DriverManager.getConnection(connectionString);
 
@@ -159,7 +159,7 @@ public class Aereo {
 	 * @param inputK oggetto di tipo Scanner.
 	 * @throws SQLException
 	 */
-	public void updatePassengers(Scanner inputK) throws SQLException, InputMismatchException {
+	public void updatePassengers(Scanner inputK) throws SQLException, InputMismatchException, SQLIntegrityConstraintViolationException {
 
 		connection = DriverManager.getConnection(connectionString);
 

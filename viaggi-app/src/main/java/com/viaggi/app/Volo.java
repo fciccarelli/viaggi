@@ -13,8 +13,6 @@ import java.sql.Statement;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping;
-
 /**
  * @author Luigi
  * 
@@ -87,7 +85,7 @@ public class Volo {
 	 * @param inputK oggetto di tipo Scanner.
 	 * @throws SQLException
 	 */
-	public void insertVolo(Scanner inputK) throws SQLException {
+	public void insertVolo(Scanner inputK) throws SQLException, SQLIntegrityConstraintViolationException {
 
 		connection = DriverManager.getConnection(connectionString);
 
@@ -152,7 +150,7 @@ public class Volo {
 	 * @param inputK oggetto di tipo Scanner.
 	 * @throws SQLException
 	 */
-	public void cercaVolo(Scanner inputK) throws SQLException, InputMismatchException {
+	public void cercaVolo(Scanner inputK) throws SQLException, InputMismatchException, SQLIntegrityConstraintViolationException {
 
 		connection = DriverManager.getConnection(connectionString);
 

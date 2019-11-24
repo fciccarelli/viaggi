@@ -1,6 +1,7 @@
 package com.viaggi.app;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -36,6 +37,8 @@ public class ViaggiRun {
 			case 1:
 				try {
 					aereo.insertAereo(inputK);
+				} catch (SQLIntegrityConstraintViolationException e) {
+					System.err.println("Errore con le foreign key del database");
 				} catch (SQLException e2) {
 					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
 //					e2.printStackTrace();
@@ -48,7 +51,9 @@ public class ViaggiRun {
 			case 2:
 				try {
 					aereo.cercaAereo(inputK);
-				} catch (SQLException e2) {
+				} catch (SQLIntegrityConstraintViolationException e) {
+					System.err.println("Errore con le foreign key del database");
+				}	catch (SQLException e2) {
 					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
 //					e2.printStackTrace();
 				} catch (InputMismatchException e2) {
@@ -60,6 +65,8 @@ public class ViaggiRun {
 			case 3:
 				try {
 					aereo.updatePassengers(inputK);
+				} catch (SQLIntegrityConstraintViolationException e) {
+					System.err.println("Errore con le foreign key del database");
 				} catch (SQLException e2) {
 					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
 //					e2.printStackTrace();
@@ -72,6 +79,8 @@ public class ViaggiRun {
 			case 4:
 				try {
 					aeroporto.insertAeroporto(inputK);
+				} catch (SQLIntegrityConstraintViolationException e) {
+					System.err.println("Errore con le foreign key del database");
 				} catch (SQLException e1) {
 					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
 //					e1.printStackTrace();
@@ -84,6 +93,8 @@ public class ViaggiRun {
 			case 5:
 				try {
 					aeroporto.cercaAeroporto(inputK);
+				} catch (SQLIntegrityConstraintViolationException e) {
+					System.err.println("Errore con le foreign key del database");
 				} catch (SQLException e) {
 					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
 //					e.printStackTrace();
@@ -96,6 +107,8 @@ public class ViaggiRun {
 			case 6:
 				try {
 					aeroporto.updatePiste(inputK);
+				} catch (SQLIntegrityConstraintViolationException e) {
+					System.err.println("Errore con le foreign key del database");
 				} catch (SQLException e1) {
 					System.err.println("Hai inserito un valore non accettato nel database");
 //					e1.printStackTrace();
@@ -108,6 +121,8 @@ public class ViaggiRun {
 			case 7:
 				try {
 					volo.insertVolo(inputK);
+				} catch (SQLIntegrityConstraintViolationException e) {
+					System.err.println("Errore con le foreign key del database");
 				} catch (SQLException e1) {
 					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
 //					e1.printStackTrace();
@@ -117,6 +132,8 @@ public class ViaggiRun {
 			case 8:
 				try {
 					volo.cercaVolo(inputK);
+				} catch (SQLIntegrityConstraintViolationException e) {
+					System.err.println("Errore con le foreign key del database");
 				} catch (SQLException e) {
 					System.err.println("Hai inserito un valore non accettato nel database. Operazione non effettuata.");
 					e.printStackTrace();
