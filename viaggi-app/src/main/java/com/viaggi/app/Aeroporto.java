@@ -39,21 +39,45 @@ public class Aeroporto {
 		try {
 
 			connection = DriverManager.getConnection(connectionString);
+			Statement stm = connection.createStatement();
+
 			PreparedStatement prepared = connection
 					.prepareStatement("insert into Aeroporto (id,citta,nazione,nPiste) values (?,?,?,?)");
+
 			System.out.println("inserisci l'id dell'Aeroporto: ");
 			id = inputKey.nextLine();
 			prepared.setString(1, id);
+
 			System.out.println("inserire la citta");
 			citta = inputKey.nextLine();
 			prepared.setString(2, citta);
+
 			System.out.println("inserire la nazione");
 			nazione = inputKey.nextLine();
 			prepared.setString(3, nazione);
+
 			System.out.println("inserisci il numero di piste");
 			nPiste = inputKey.nextInt();
 			prepared.setInt(4, nPiste);
+
 			prepared.executeUpdate();
+
+			ResultSet rs = stm.executeQuery("SELECT * FROM Aeroporto WHERE id = '" + id + "'");
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			/**
+			 * Visualizzazione dell'operazione appena effettuata.
+			 */
+			while (rs.next()) {
+				System.out.println(rsmd.getColumnName(1) + "= " + rs.getString(1) + ", " + rsmd.getColumnName(2) + "= "
+						+ rs.getString(2) + ", " + rsmd.getColumnName(3) + "= " + rs.getString(3) + ", "
+						+ rsmd.getColumnName(4) + "= " + rs.getInt(4));
+			}
+
+			System.out.println("");
+			System.out.println("Operazione effettuata.");
+			System.out.println("");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -83,8 +107,10 @@ public class Aeroporto {
 
 			connection = DriverManager.getConnection(connectionString);
 			Statement stm = connection.createStatement();
+
 			System.out.println("inserisci l'id dell'Aeroporto che vuoi cercare");
 			id = inputKey.nextLine();
+
 			ResultSet rs = stm.executeQuery("SELECT * FROM Aeroporto Where id = '" + id + "'");
 			ResultSetMetaData rsmd = rs.getMetaData();
 			while (rs.next()) {
@@ -148,6 +174,7 @@ public class Aeroporto {
 						+ rs.getString(3) + ", " + rsmd.getColumnName(4) + "= " + rs.getInt(4));
 			}
 
+			System.out.println("");
 			System.out.println("Operazione effettuata.");
 			System.out.println("");
 

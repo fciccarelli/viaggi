@@ -40,6 +40,7 @@ public class Aereo {
 		try {
 
 			connection = DriverManager.getConnection(connectionString);
+			Statement stm = connection.createStatement();
 
 			PreparedStatement prepared = connection
 					.prepareStatement("insert into Aereo (tipoAereo, nPass, quantitaMerci) values (?,?,?)");
@@ -57,6 +58,22 @@ public class Aereo {
 			prepared.setLong(3, quantitaMerci);
 
 			prepared.executeUpdate();
+
+			ResultSet rs = stm.executeQuery("SELECT * FROM aereo WHERE tipoAereo = '" + tipoAereo + "' AND nPass = "
+					+ nPass + " AND quantitaMerci = " + quantitaMerci);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			/**
+			 * Visualizzazione dell'operazione appena effettuata.
+			 */
+			while (rs.next()) {
+				System.out.println(rsmd.getColumnName(1) + "= " + rs.getString(1) + ", " + rsmd.getColumnName(2) + "= "
+						+ rs.getString(2) + ", " + rsmd.getColumnName(3) + "= " + rs.getInt(3));
+			}
+
+			System.out.println("");
+			System.out.println("Operazione Insert tabella Aereo effettuata.");
+			System.out.println("");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -115,8 +132,7 @@ public class Aereo {
 		}
 
 	}
-	
-	
+
 	public void updatePassengers(Scanner inputK) {
 		String connectionString = "jdbc:mysql://localhost:3306/viaggi?user=root&password=root&serverTimezone=Europe/Rome";
 
@@ -158,7 +174,8 @@ public class Aereo {
 						+ rs.getString(2) + ", " + rsmd.getColumnName(3) + "= " + rs.getInt(3));
 			}
 
-			System.out.println("Operazione effettuata.");
+			System.out.println("");
+			System.out.println("Operazione Update tabella Aereo effettuata.");
 			System.out.println("");
 
 		} catch (SQLException e) {
