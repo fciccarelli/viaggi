@@ -266,34 +266,6 @@ public class Volo implements DbOperations {
 		
 		volo = (Volo) db;
 		
-		if(volo.getGiornoSett().length()> LENGTH_GIORNO_SETT) {
-			throw new IllegalArgumentException("Il giorno settimana inserito non è valido.");
-		} else {
-			this.setGiornoSett(volo.getGiornoSett());
-		}
-		
-		if(volo.getAeroportoPart().length() > LENGTH_AEROPORTO_PART) {
-			throw new IllegalArgumentException("L'aeroporto di partenza inserito non è valido.");
-		} else {
-			this.setAeroportoPart(volo.getAeroportoPart());
-		}
-		
-		if(volo.getAeroportoArr().length() > LENGTH_AEROPORTO_ARR) {
-			throw new IllegalArgumentException("L'aeroporto di arrivo inserito non è valido.");
-		} else {
-			this.setAeroportoArr(volo.getAeroportoArr());
-		}
-		
-		if(volo.getTipoAereo().length() > LENGTH_TIPO_AEREO) {
-			throw new IllegalArgumentException("Il tipo di aereo inserito non è valido.");
-		} else {
-			this.setTipoAereo(volo.getTipoAereo());
-		}
-		
-		this.setOraPartenza(volo.getOraPartenza());
-		
-		this.setOraArrivo(volo.getOraArrivo());
-		
 		insertQuery = "insert into volo (giornoSett, aeroportoPart, aeroportoArr, tipoAereo, oraPartenza, oraArrivo) values"
 							+ "(?, ?, ?, ?, ?, ?);";
 		
@@ -331,8 +303,7 @@ public class Volo implements DbOperations {
 		
 		selectQuery = "Select * from volo "
 						+ "Where idVolo = ?;";
-		
-		
+
 		preparedStmt = conn.prepareStatement(selectQuery);
 		
 		preparedStmt.setInt(1, volo.getIdVolo());

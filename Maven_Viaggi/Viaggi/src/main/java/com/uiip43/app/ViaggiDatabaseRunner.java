@@ -11,7 +11,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 
 /**
@@ -41,7 +40,6 @@ public class ViaggiDatabaseRunner {
 		try {
 			
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();  
-			
 			connection = DriverManager.getConnection(CONNECTION_STRING, "root", "root");
 			
 			do {
@@ -51,12 +49,13 @@ public class ViaggiDatabaseRunner {
 				switch (scelta) {
 					case 0 : 
 						System.out.println("Arrivederci.");
+
 						break;
-					case 1: mostraMenuAereo(bufferedReader, dbAereo, connection);
+					case 1: menuAereo(bufferedReader, dbAereo, connection);
 						break;
-					case 2: mostraMenuAeroporto(bufferedReader, dbAeroporto, connection);
+					case 2: menuAeroporto(bufferedReader, dbAeroporto, connection);
 						break;
-					case 3: mostraMenuVolo(bufferedReader, dbVolo, connection);
+					case 3: menuVolo(bufferedReader, dbVolo, connection);
 					
 					default:
 						System.out.println("Scelta non valida, riprovare.");
@@ -65,23 +64,18 @@ public class ViaggiDatabaseRunner {
 				}
 			}while(scelta != 0);
 			
-			
+			connection.close();
 			bufferedReader.close();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		
@@ -102,7 +96,6 @@ public class ViaggiDatabaseRunner {
 			lettura = reader.readLine();
 			scelta = Integer.parseInt(lettura);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NumberFormatException n){
 			System.err.println("Non è stato inserito un numero.");
@@ -111,7 +104,7 @@ public class ViaggiDatabaseRunner {
 		return scelta;
 	}
 	
-	private static void mostraMenuAereo(BufferedReader reader, DbOperations dbAereo, Connection connection) {
+	private static void menuAereo(BufferedReader reader, DbOperations dbAereo, Connection connection) {
 		String lettura = "";
 		int scelta = -1;
 		int insertResult = -1;
@@ -204,7 +197,7 @@ public class ViaggiDatabaseRunner {
 						String tipoAereoUpdate = reader.readLine();
 						
 						if(tipoAereoUpdate.length()>Aereo.LENGTH_TIPO_AEREO) {
-							throw new IllegalArgumentException("Tipo di aereo inserito non valido.");
+							throw new IllegalArgumentException();
 						}
 						
 						aereoUpdate.setTipoAereo(tipoAereoUpdate);
@@ -233,20 +226,17 @@ public class ViaggiDatabaseRunner {
 			}while(scelta != 0);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NumberFormatException n){
 			System.err.println("Non è stato inserito un numero.");
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Campo inserito non valido.");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Campi inseriti non validi, riprovare. Inserimento non effettuato.");
 		}
 	}
 	
-	private static void mostraMenuAeroporto(BufferedReader reader, DbOperations dbAeroporto, Connection connection) {
+	private static void menuAeroporto(BufferedReader reader, DbOperations dbAeroporto, Connection connection) {
 		String lettura = "";
 		int scelta = -1;
 		int insertResult = -1;
@@ -272,7 +262,7 @@ public class ViaggiDatabaseRunner {
 						String idAeroporto = reader.readLine();
 						
 						if(idAeroporto.length()>Aeroporto.LENGTH_ID_AEROPORTO) {
-							throw new IllegalArgumentException("Id aeroporto inserito non valido.");
+							throw new IllegalArgumentException();
 						}
 						aeroporto1.setId(idAeroporto);
 						
@@ -309,7 +299,7 @@ public class ViaggiDatabaseRunner {
 						String idAeroportoRicerca = reader.readLine();
 						
 						if(idAeroportoRicerca.length()>Aeroporto.LENGTH_ID_AEROPORTO) {
-							throw new IllegalArgumentException("Tipo di aeroporto inserito non valido.");
+							throw new IllegalArgumentException();
 						}
 						
 						aeroportoRicerca.setId(idAeroportoRicerca);
@@ -342,7 +332,7 @@ public class ViaggiDatabaseRunner {
 						String idAeroportoUpdate = reader.readLine();
 						
 						if(idAeroportoUpdate.length()>Aeroporto.LENGTH_ID_AEROPORTO) {
-							throw new IllegalArgumentException("L'Id dell'aeroporto inserito non valido.");
+							throw new IllegalArgumentException();
 						}
 						
 						aeroportoUpdate.setId(idAeroportoUpdate);
@@ -371,20 +361,17 @@ public class ViaggiDatabaseRunner {
 			}while(scelta != 0);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NumberFormatException n){
 			System.err.println("Non è stato inserito un numero.");
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Campi inseriti non validi.");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Campi inseriti non validi, riprovare. Inserimento non effettuato.");
 		}
 	}
 	
-	private static void mostraMenuVolo(BufferedReader reader, DbOperations dbVolo, Connection connection) {
+	private static void menuVolo(BufferedReader reader, DbOperations dbVolo, Connection connection) {
 		String lettura = "";
 		int scelta = -1;
 		int insertResult = -1;
@@ -408,42 +395,42 @@ public class ViaggiDatabaseRunner {
 						
 						lettura = reader.readLine();
 						if(lettura.length() > Volo.LENGTH_GIORNO_SETT) {
-							throw new IllegalArgumentException("Tipo di aereo inserito non valido.");
+							throw new IllegalArgumentException();
 						}
 						voloInsert.setGiornoSett(lettura);
 						
 						System.out.println("Inserire l'id dell'aeroporto di partenza ");
 						lettura = reader.readLine();
 						if(lettura.length() > Volo.LENGTH_AEROPORTO_PART) {
-							throw new IllegalArgumentException("L'aeroporto di partenza inserito non è valido.");
+							throw new IllegalArgumentException();
 						}
 						voloInsert.setAeroportoPart(lettura);
 						
 						System.out.println("Inserire l'id dell'aeroporto di arrivo ");
 						lettura = reader.readLine();
 						if(lettura.length() > Volo.LENGTH_AEROPORTO_ARR) {
-							throw new IllegalArgumentException("L'aeroporto di arrivo inserito non è valido.");
+							throw new IllegalArgumentException();
 						}
 						voloInsert.setAeroportoArr(lettura);
 						
 						System.out.println("Inserire il tipo di aereo: ");
 						lettura = reader.readLine();
 						if(lettura.length() > Volo.LENGTH_TIPO_AEREO) {
-							throw new IllegalArgumentException("Il tipo di aereo inserito non è valido.");
+							throw new IllegalArgumentException();
 						}
 						voloInsert.setTipoAereo(lettura);
 						
 						System.out.println("Inserire l'ora di partenza: ");
 						lettura = reader.readLine();
-						if(lettura.length() > Volo.LENGTH_ORARIO) {
-							throw new IllegalArgumentException("L'ora di partenza inserita non è valido.");
+						if(lettura.length() == Volo.LENGTH_ORARIO) {
+							throw new IllegalArgumentException();
 						}
 						voloInsert.setOraPartenza(lettura);
 						
 						System.out.println("Inserire l'ora di arrivo: ");
 						lettura = reader.readLine();
-						if(lettura.length() > Volo.LENGTH_ORARIO) {
-							throw new IllegalArgumentException("L'ora di arrivo inserita non è valido.");
+						if(lettura.length() == Volo.LENGTH_ORARIO) {
+							throw new IllegalArgumentException();
 						}
 						voloInsert.setOraArrivo(lettura);
 						
@@ -498,16 +485,13 @@ public class ViaggiDatabaseRunner {
 			}while(scelta != 0);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NumberFormatException n){
 			System.err.println("Non è stato inserito un numero.");
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Campi inseriti non validi.");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Campi inseriti non validi, riprovare. Inserimento non effettuato.");
 		}
 	}
 

@@ -161,16 +161,6 @@ public class Aereo implements DbOperations {
 		
 		aereo = (Aereo) db;
 		
-		if(aereo.getTipoAereo().length() > LENGTH_TIPO_AEREO) {
-			throw new IllegalArgumentException("Il tipo di aereo inserito non è valido");
-		} else {
-			this.setTipoAereo(aereo.getTipoAereo());
-		}
-		
-		this.setnPass(aereo.getnPass());
-		
-		this.setQuantitaMerci(aereo.getQuantitaMerci());
-		
 		insertQuery = "insert into aereo (tipoAereo, nPass, quantitaMerci) values"
 							+ "(?, ?, ?);";
 		

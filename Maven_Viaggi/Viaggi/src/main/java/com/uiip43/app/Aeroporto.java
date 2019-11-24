@@ -191,27 +191,7 @@ public class Aeroporto implements DbOperations {
 		PreparedStatement preparedStmt = null;
 		
 		aeroporto = (Aeroporto) db;
-		
-		if(aeroporto.getId().length() > LENGTH_ID_AEROPORTO) {
-			throw new IllegalArgumentException("L'Id inserito non è valido.");
-		} else {
-			this.setId(aeroporto.getId());
-		}
-		
-		if(aeroporto.getCitta().length() > LENGTH_CITTA) {
-			throw new IllegalArgumentException("La città inserita ha un nome troppo lungo.");
-		} else {
-			this.setCitta(aeroporto.getCitta());
-		}
-		
-		if(aeroporto.getNazione().length() > LENGTH_NAZIONE) {
-			throw new IllegalArgumentException("La nazione inserita ha un nome troppo lungo.");
-		} else {
-			this.setCitta(aeroporto.getNazione());
-		}
-		
-		this.setnPiste(aeroporto.getnPiste());
-		
+				
 		insertQuery = "insert into aeroporto (id, citta, nazione, nPiste) values"
 							+ "(?, ?, ?, ?);";
 		
