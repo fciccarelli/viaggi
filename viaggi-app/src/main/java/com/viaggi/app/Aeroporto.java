@@ -75,7 +75,7 @@ public class Aeroporto {
 			}
 
 			System.out.println("");
-			System.out.println("Operazione effettuata.");
+			System.out.println("Operazione di inserimento Aeroporto effettuata.");
 			System.out.println("");
 
 		} catch (SQLException e) {
@@ -175,7 +175,7 @@ public class Aeroporto {
 			}
 
 			System.out.println("");
-			System.out.println("Operazione effettuata.");
+			System.out.println("Operazione di modifica Aeroporto effettuata.");
 			System.out.println("");
 
 		} catch (SQLException e) {

@@ -46,27 +46,55 @@ public class Volo {
 		try {
 
 			connection = DriverManager.getConnection(connectionString);
+			Statement stm = connection.createStatement();
+
 			PreparedStatement prepared = connection.prepareStatement(
 					"insert into volo (giornoSett,aeroportoPart,aeroportoArr,tipoAereo,oraPartenza,oraArrivo) values (?,?,?,?,?,?)");
+
 			System.out.println("inserisci giorno della settimana: ");
 			giornoSett = inputKey.nextLine();
 			prepared.setString(1, giornoSett);
+
 			System.out.println("inserisci sigla aeroporto di partenza");
 			aeroportoPart = inputKey.nextLine();
 			prepared.setString(2, aeroportoPart.toUpperCase());
+
 			System.out.println("inserisci sigla aeroporto di arrivo");
 			aeroportoArr = inputKey.nextLine();
 			prepared.setString(3, aeroportoArr.toUpperCase());
+
 			System.out.println("inserisci il modello dell'aereo");
 			tipoAereo = inputKey.nextLine();
 			prepared.setString(4, tipoAereo);
+
 			System.out.println("orario di partenza (HH:MM:SS)");
 			oraPartenza = inputKey.nextLine();
 			prepared.setString(5, oraPartenza);
+
 			System.out.println("orario di arrivo (HH:MM:SS)");
 			oraArrivo = inputKey.nextLine();
 			prepared.setString(6, oraArrivo);
+
 			prepared.executeUpdate();
+
+			ResultSet rs = stm.executeQuery("SELECT * FROM Volo WHERE aeroportoPart= '" + aeroportoPart
+					+ "' AND aeroportoArr = '" + aeroportoArr + "' AND tipoAereo = '" + tipoAereo + "'");
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			/**
+			 * Visualizzazione dell'operazione appena effettuata.
+			 */
+			while (rs.next()) {
+				System.out.println(rsmd.getColumnName(2) + "= " + rs.getString(2) + ", " + rsmd.getColumnName(3) + "= "
+						+ rs.getString(3) + ", " + rsmd.getColumnName(4) + "= " + rs.getString(4) + ", "
+						+ rsmd.getColumnName(5) + "= " + rs.getString(5) + ", " + rsmd.getColumnName(6) + "= "
+						+ rs.getString(6) + ", " + rsmd.getColumnName(7) + "= " + rs.getString(7));
+			}
+
+			System.out.println("");
+			System.out.println("Operazione di inserimento Volo effettuata.");
+			System.out.println("");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -104,7 +132,7 @@ public class Volo {
 				System.out.println(rsmd.getColumnName(2) + "= " + rs.getString(2) + ", " + rsmd.getColumnName(3) + "= "
 						+ rs.getString(3) + ", " + rsmd.getColumnName(4) + "= " + rs.getString(4) + ", "
 						+ rsmd.getColumnName(5) + "= " + rs.getString(5) + ", " + rsmd.getColumnName(6) + "= "
-						+ rs.getString(6) + ", "+rsmd.getColumnName(7)+"= " + rs.getString(7));
+						+ rs.getString(6) + ", " + rsmd.getColumnName(7) + "= " + rs.getString(7));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
